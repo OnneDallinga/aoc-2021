@@ -1,12 +1,11 @@
-import puzzles.DayFour;
-import puzzles.DayThree;
+import puzzles.DayFive;
 
 import java.io.IOException;
 
 public class Whatever {
 
-    public static void main(String[] args) throws IOException {
-        System.out.println(new DayFour().puzzleTwo());
+    public static void main(String[] args) {
+        System.out.println(new DayFive().puzzleTwo());
     }
 
 }
