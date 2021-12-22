@@ -26,7 +26,7 @@ public class DayTwelve {
         createCaveMap();
         runPuzzle(false);
 
-        return caveRoutes.size();
+        return caveRoutes.stream().filter(caveRoute -> !caveRoute.isDeadEnded).count();
     }
 
     private void createCaveMap() {
@@ -98,7 +98,6 @@ public class DayTwelve {
                             return addNewConnectionsToStreamForPuzzleTwo(connections, caveRoute);
                         }
                     }).toList();
-            System.out.println(caveRoutes);
         }
     }
 
@@ -115,12 +114,17 @@ public class DayTwelve {
 
     private Stream<CaveRoute> addNewConnectionsToStreamForPuzzleTwo(List<String> connections, CaveRoute caveRoute) {
         return connections.stream()
-                .filter(connection -> caves.get(connection).isLarge || !caveRoute.caves.contains(connection) || !caveRoute.hasVisitedASmallCaveTwice)
                 .map(connection -> {
+                    if (!caves.get(connection).isLarge && caveRoute.caves.contains(connection) && caveRoute.hasVisitedASmallCaveTwice) {
+                        caveRoute.isDeadEnded = true;
+                        return caveRoute;
+                    }
                     CaveRoute caveRoute1 = new CaveRoute();
                     caveRoute1.caves = new ArrayList<>(caveRoute.caves);
                     if (!caves.get(connection).isLarge && caveRoute.caves.contains(connection)) {
                         caveRoute1.hasVisitedASmallCaveTwice = true;
+                    } else {
+                        caveRoute1.hasVisitedASmallCaveTwice = caveRoute.hasVisitedASmallCaveTwice;
                     }
                     caveRoute1.caves.add(connection);
                     return caveRoute1;
@@ -132,16 +136,6 @@ public class DayTwelve {
         boolean isDeadEnded = false;
         boolean isEnded = false;
         boolean hasVisitedASmallCaveTwice = false;
-
-        @Override
-        public String toString() {
-            return "CaveRoute{" +
-                    "caves=" + caves +
-                    ", isDeadEnded=" + isDeadEnded +
-                    ", isEnded=" + isEnded +
-                    ", hasVisitedASmallCaveTwice=" + hasVisitedASmallCaveTwice +
-                    '}';
-        }
     }
 
     private static class Cave {
