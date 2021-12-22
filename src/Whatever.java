@@ -1,9 +1,9 @@
-import puzzles.DayEleven;
+import puzzles.DayTwelve;
 
 public class Whatever {
 
     public static void main(String[] args) {
-        System.out.println(new DayEleven().puzzleTwo());
+        System.out.println(new DayTwelve().puzzleTwo());
     }
 
 }
